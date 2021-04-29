@@ -64,3 +64,25 @@ exports.login = async (req, res) => {
         return res.status(500).send(error);
     }
 };
+
+exports.logout = async (req, res) => {
+    const user = await User.findById(req.user._id).exec();
+
+    try {
+        var authToken =
+            req.headers["x-access-token"] || req.headers["authorization"];
+        if (authToken.startsWith("Bearer ")) {
+            authToken = authToken.slice(7, authToken.length);
+        }
+
+        user.tokens = user.tokens.filter(
+            (element) => element.token !== authToken
+        );
+
+        await user.save();
+
+        return res.status(200).json({ message: "Logout Success" });
+    } catch (error) {
+        return res.status(401).send(error);
+    }
+};

@@ -26,6 +26,6 @@ const authRoutes = require("./routes/auth");
 
 app.use("/auth", authRoutes);
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => console.log(`SERVER STARTED AT PORT ${port}`));
